@@ -1,9 +1,6 @@
-
-using Elasticsearch.Net;
 using ElasticSearch_API.Extension;
 using ElasticSearch_API.Repository;
 using ElasticSearch_API.Service;
-using Nest;
 
 namespace ElasticSearch_API
 {
@@ -23,6 +20,7 @@ namespace ElasticSearch_API
 
             builder.Services.AddScoped<ProductService>();
             builder.Services.AddScoped<ProductRepository>();
+            builder.Services.AddScoped<EcommerceRepository>();
             var app = builder.Build();
 
             

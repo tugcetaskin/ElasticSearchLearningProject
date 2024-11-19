@@ -1,0 +1,81 @@
+﻿@using ElasticsearchWeb.ViewModel
+@model SearchPageViewModel
+@{
+    ViewData["Title"] = "Search";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <form asp-action="Search" method="get">
+                <div class="mb-3">
+                    <label asp-for="EcommerceSearch.Category" class="form-label"></label>
+                    <input asp-for="EcommerceSearch.Category" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EcommerceSearch.Gender" class="form-label"></label>
+                    <input asp-for="EcommerceSearch.Gender" class="form-control" rows="3">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EcommerceSearch.OrderDateStart" class="form-label"></label>
+                    <input asp-for="EcommerceSearch.OrderDateStart" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EcommerceSearch.OrderDateEnd" class="form-label"></label>
+                    <input asp-for="EcommerceSearch.OrderDateEnd" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-9">
+            <div class="alert alert-success">
+                <span>Toplam : @Model.TotalCount Kayıt Bulunmuştur</span>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Customer Full Name</th>
+                        <th>Gender</th>
+                        <th>OrderId</th>
+                        <th>Order Date</th>
+                        <th>Category</th>
+                        <th>Taxful Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.DataList)
+                    {
+                        <tr>
+                            <td>@item.CustomerFullName</td>
+                            <td>@item.Gender</td>
+                            <td>@item.OrderId</td>
+                            <td>@item.OrderDate</td>
+                            <td>@item.Category</td>
+                            <td>@item.TaxfulTotalPrice</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item @(Model.Page==1 ? "active" : "")">
+                        <a class="page-link" href="@Model.CreatePageUrl(Context.Request, 1, Model.PageSize)">First</a>
+                    </li>
+                    @for(int i=Model.StartPage(); i<=Model.EndPage(); i++)
+                    {
+                        <li class="page-item @(Model.Page==i ? "active" : "")">
+                            <a class="page-link" href="@Model.CreatePageUrl(Context.Request, i, Model.PageSize)">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.Page==Model.PageLinkCount ? "active" : "")">
+                        <a class="page-link" href="@Model.CreatePageUrl(Context.Request, Model.PageLinkCount, Model.PageSize)">Last</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+

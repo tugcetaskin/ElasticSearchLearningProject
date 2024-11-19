@@ -1,7 +1,7 @@
 ﻿using Elastic.Clients.Elasticsearch;
 using Elastic.Transport;
 
-namespace ElasticSearch_API.Extension
+namespace ElasticSearchWeb.Extension
 {
     public static class ElasticSearchExt
     {

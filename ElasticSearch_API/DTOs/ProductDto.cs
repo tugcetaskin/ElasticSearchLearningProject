@@ -1,5 +1,4 @@
 ﻿using ElasticSearch_API.Models;
-using Nest;
 
 namespace ElasticSearch_API.DTOs
 {

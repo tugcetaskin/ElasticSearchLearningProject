@@ -1,7 +1,7 @@
-﻿using ElasticSearch_API.DTOs;
+﻿using Elastic.Clients.Elasticsearch;
+using ElasticSearch_API.DTOs;
 using ElasticSearch_API.Models;
 using ElasticSearch_API.Repository;
-using Nest;
 using System.Collections.Immutable;
 using System.Net;
 
@@ -66,14 +66,15 @@ namespace ElasticSearch_API.Service
         {
             var response = await _repository.DeleteAsync(id);
 
-            if(!response.IsValid && response.Result == Result.NotFound)
+            if(!response.IsValidResponse && response.Result == Result.NotFound)
             {
                 return ResponseDto<bool>.Fail("Veri Bulunamadı!", HttpStatusCode.NotFound);
 
             }
-            if(!response.IsValid)
+            if(!response.IsValidResponse)
             {
-                _logger.LogError(response.OriginalException, response.ServerError.Error.ToString());
+                response.TryGetOriginalException(out Exception? exp);
+                _logger.LogError(exp, response.ElasticsearchServerError.Error.ToString());
                 return ResponseDto<bool>.Fail("Veri Silme işlemi sırasında bir hata oluştu.", HttpStatusCode.InternalServerError);
 
             }
